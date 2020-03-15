@@ -67,3 +67,95 @@ sns.boxplot('SalStat', 'age', data = data2)
 data2.groupby('SalStat')['age'].median()
 
 sns.pairplot(data2,hue = 'SalStat')
+
+#LOGISTIC REGRESSION
+
+data2['SalStat'] = data2['SalStat'].map({' less than or equal to 50,000':0, ' greater than 50,000':1})
+print(data2['SalStat'])
+#data2['SalStat'] = data2['SalStat'].notnull().astype('int64') #mytoouch :)
+
+new_data = pd.get_dummies(data2,drop_first = True)
+
+columns_list = list(new_data.columns)
+print(columns_list)
+
+features = list(set(columns_list) - set(['SalStat']))
+print(features)
+ 
+y= new_data['SalStat'].values
+print(y)
+x=new_data[features].values
+print(x)
+
+#SPLITTING THE DATA
+train_x,test_x,train_y,test_y = train_test_split(x,y, test_size = 0.3, random_state=0)
+
+#INSTANCE OF THE MODEL
+logistic = LogisticRegression()
+
+logistic.fit(train_x,train_y)
+logistic.coef_
+logistic.intercept_
+
+#PREDICTION
+prediction = logistic.predict(test_x)
+print(prediction)
+
+#CONFUSION MATRIX
+confusion_matrix = confusion_matrix(test_y,prediction)
+print(confusion_matrix)
+    
+accuracy = accuracy_score(test_y, prediction)
+print(accuracy)
+
+#IMPROVE THE ACCURACY BY REMOVING INSIGNIFICANT DATA
+
+data2['SalStat'] = data2['SalStat'].map({' less than or equal to 50,000': 0, ' greater than 50,000': 1})
+print(data2['SalStat'])
+
+cols = ['gender', 'nativecountry', 'race', 'JobType']
+new_data = data2.drop(cols,axis = 1)
+new_data = pd.get_dummies(new_data , drop_first = True )
+columns_list = new_data.columns
+print(columns_list)
+
+features = list(set(columns_list) - set(['SalStat']))
+print(features)
+
+#OUTPUT VALUES IN y
+
+y=new_data['SalStat'].values
+print(y)
+
+#INPUT VALUES IN x
+x=new_data[features].values
+print(x)
+
+train_x,test_x,train_y,test_y = train_test_split(x,y, test_size = 0.3, random_state=0)
+
+logistic = LogisticRegression()
+
+logistic.fit(train_x, train_y)
+
+prediction = logistic.predict(test_x)
+
+accuracy = accuracy_score(test_y, prediction)
+print(accuracy)
+
+
+#KNN
+
+from sklearn.neighbors import KNeighborsClassifier
+import matplotlib.pyplot as plt
+
+KNN_classifier = KNeighborsClassifier(n_neighbors = 10)
+
+KNN_classifier.fit(train_x,train_y)
+
+prediction = KNN_classifier.predict(test_x)
+
+'''c_matrix = confusion_matrix(test_y, prediction)
+print(c_matrix)'''
+
+acc = accuracy_score(test_y,prediction)
+print(acc)
