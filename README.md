@@ -1,7 +1,9 @@
 # datascience-casestudy
-CASE STUDY 1:
+## CASE STUDY 1:
 SUBSIDY.INC
-predict the income
+- predict the income
 
-CASE STUDY 2:
+## CASE STUDY 2:
+STORM MOTORS
+- predict the price
       
